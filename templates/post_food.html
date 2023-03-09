@@ -9,8 +9,9 @@
     <form method="POST" action="/post_food">
         <input type="text" name="food_name" placeholder="Food Name" required><br><br>
         <textarea name="food_description" placeholder="Food Description" required></textarea><br><br>
-        <input type="text" name="pickup_address" placeholder="Pickup Address" required><br><br>
-        <input type="text" name="pickup_time" placeholder="Pickup Time" required><br><br>
+        <input type="number" name="quantity" placeholder="Quantity" required><br><br>
+        <!-- <input type="text" name="pickup_address" placeholder="Pickup Address" required><br><br>
+        <input type="text" name="pickup_time" placeholder="Pickup Time" required><br><br> -->
         <input type="hidden" name="lat" id="lat">
         <input type="hidden" name="lng" id="lng">
         <input type="submit" value="Post">

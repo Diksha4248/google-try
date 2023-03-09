@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 import firebase_admin
 from firebase_admin import credentials, firestore, auth
 import geopy.distance
@@ -57,7 +57,7 @@ def login():
             if user_type == 'food_provider' and food_providers.document(uid).get().exists:
                 return redirect('/post_food')
             elif user_type == 'ngo' and ngos.document(uid).get().exists:
-                return redirect('/find_food')
+                return redirect('/food_post')
             else:
                 return 'Invalid user type'
             
@@ -85,15 +85,20 @@ def login():
 def post_food():
     if request.method == 'POST':
         # get the user's current location from the browser's geolocation API
-        lat = request.form.get('lat')
-        lng = request.form.get('lng')
+        lat = float(request.form.get('lat'))
+        lng = float(request.form.get('lng'))
         
         # get the other form data
         food_name = request.form.get('food_name')
         food_description = request.form.get('food_description')
-        pickup_address = request.form.get('pickup_address')
-        pickup_time = request.form.get('pickup_time')
+        # quantity = request.form.get('quantity')
+        quantity = int(request.form['quantity'])
+        # pickup_address = request.form.get('pickup_address')
+        # pickup_time = request.form.get('pickup_time')
         
+
+        food_post = {'food': food_name, 'quantity': quantity, 'location': firestore.GeoPoint(lat, lng), 'claimed_by': ''}
+        food_posts.add(food_post)
         
         
         return 'Food posted successfully!'
@@ -102,48 +107,39 @@ def post_food():
 
 
 
-@app.route('/find_food', methods=['GET', 'POST'])
-def find_food():
-    if request.method == 'POST':
-        latitude = request.form['latitude']
-        longitude = request.form['longitude']
-        radius = request.form['radius']
-        quantity = request.form['quantity']
-        
-        center = firestore.GeoPoint(latitude, longitude)
-        filtered_posts = []
-        for post in food_posts.stream():
-            post_dict = post.to_dict()
-            if post_dict['claimed_by'] == '':
-                post_location = post_dict['location']
-                post_quantity = post_dict['quantity']
-                distance = geopy.distance.distance((latitude, longitude), (post_location.latitude, post_location.longitude)).km
-                if distance <= float(radius) and post_quantity >= int(quantity):
-                    post_dict['id'] = post.id
-                    filtered_posts.append(post_dict)
-        
-        return render_template('find_food.html', posts=filtered_posts)
-    
-    return render_template('find_food.html')
+@app.route('/food_post')
+def food_post():
+    # Retrieve all food posts from Firebase
+    db = firestore.client()
+    food_posts = db.collection('food_posts').get()
 
-@app.route('/claim_food/<post_id>')
+    # Render template with food posts
+    return render_template('food_post.html', food_posts=food_posts)
+
+
+@app.route('/claim_food/<post_id>', methods=['POST'])
 def claim_food(post_id):
-    try:
-        post_ref = food_posts.document(post_id)
-        post = post_ref.get().to_dict()
-        claimed_by = post.get('claimed_by', None)
-        
-        if claimed_by is None:
-            user = auth.current_user
-            uid = user.uid
-            post_ref.update({'claimed_by': uid})
-            return redirect('/')
-        else:
-            return 'This post has already been claimed'
-    
-    except:
-        return 'There was an error claiming this post'
+    # Retrieve the food post from Firebase
+    db = firestore.client()
+    post_ref = db.collection('food_posts').document(post_id)
+    post = post_ref.get().to_dict()
 
+    # Send email to food donor
+    email_text = f"Hello,\n\nAn NGO has claimed your food post for {post['food']}  " \
+                 f"Please contact them at {request.form['email']} to arrange for pickup/delivery.\n\n" \
+                 f"Thank you for your generosity!\n\nFood Donation Platform"
+    # message = Message(subject="Your food post has been claimed!", body=email_text, recipients=[post['email']])
+    # mail.send(message)
+
+    # Update food post with NGO information
+    post_ref.update({
+        'claimed': True,
+        'claimed_by': request.form['ngo_name'],
+        'claimed_email': request.form['email']
+    })
+
+    # Redirect to the food post page
+    return redirect(url_for('food_post'))
 
 if __name__ == '__main__':
     app.run(debug=True)
