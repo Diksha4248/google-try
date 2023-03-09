@@ -1,0 +1,28 @@
+a web application using flask and firebase which does following things.
+ Two types of user food provider and NGO.
+ Both can register and login.
+ Use firebase
+ food provider can post about remaining food and that post will be visible to ngo this will also include location of them
+ ngo can claim it and then it will show as claimed
+ ngo will have different filters like choosing posts near to them according to distance and food quantity 
+ everything will be stored in firebase and retrieved from it 
+ login logout session
+ 
+
+
+Sure, I can help you with that!
+
+First, you will need to set up a Firebase account and create a new project. Then, you will need to create two collections in your Firestore database: "food_providers" and "ngos". Each collection will store the user data for the respective user type.
+
+In your Flask application, you will need to create routes for user registration and login. You can use Firebase Authentication to handle user authentication. Once a user is authenticated, you can use their UID to create a new document in the appropriate collection.
+
+For the food provider functionality, you will need to create a new collection in Firestore called "food_posts". Each document in this collection will represent a single food post and will contain information such as the quantity of food available and the location of the provider. When a food provider creates a new post, you can add a new document to this collection with the relevant information.
+
+To display the available posts to NGOs, you can create a route that retrieves all documents in the "food_posts" collection and displays them in a list. NGOs can then select a post and claim it by updating the "claimed_by" field of the document to the UID of the NGO that claimed it.
+
+To allow NGOs to filter posts by distance and quantity, you can use the GeoFirestore library to perform geospatial queries on the location data in the "food_posts" collection. You can also use Firestore queries to filter posts by quantity.
+
+I hope that helps you get started with your project! Let me know if you have any questions or need further assistance.
+
+
+

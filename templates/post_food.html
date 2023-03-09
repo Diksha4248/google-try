@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Post Food</title>
+</head>
+<body>
+    <h1>Post Food</h1>
+    
+    <form method="POST" action="/post_food">
+        <input type="text" name="food_name" placeholder="Food Name" required><br><br>
+        <textarea name="food_description" placeholder="Food Description" required></textarea><br><br>
+        <input type="text" name="pickup_address" placeholder="Pickup Address" required><br><br>
+        <input type="text" name="pickup_time" placeholder="Pickup Time" required><br><br>
+        <input type="hidden" name="lat" id="lat">
+        <input type="hidden" name="lng" id="lng">
+        <input type="submit" value="Post">
+    </form>
+    
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+        
+        function showPosition(position) {
+            document.getElementById("lat").value = position.coords.latitude;
+            document.getElementById("lng").value = position.coords.longitude;
+        }
+        
+        getLocation();
+    </script>
+</body>
+</html>

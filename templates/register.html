@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Register</title>
+  </head>
+  <body>
+    <h1>Register</h1>
+    <form method="POST" action="{{ url_for('register') }}">
+      <label for="name">Name:</label>
+      <input type="text" name="name" id="name" /><br /><br />
+
+      <label for="email">Email:</label>
+      <input type="email" name="email" id="email" /><br /><br />
+
+      <label for="password">Password:</label>
+      <input type="password" name="password" id="password" /><br /><br />
+
+      <label for="confirm_password">Confirm Password:</label>
+      <input
+        type="password"
+        name="confirm_password"
+        id="confirm_password"
+      /><br /><br />
+
+      <label for="user_type">I am a:</label>
+      <select name="user_type" id="user_type">
+        <option value="food_provider">Food Donor</option>
+        <option value="ngo">NGO</option></select
+      ><br /><br />
+
+      <input type="submit" value="Register" />
+    </form>
+  </body>
+</html>
