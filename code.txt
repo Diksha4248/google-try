@@ -26,3 +26,44 @@ I hope that helps you get started with your project! Let me know if you have any
 
 
 
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Food Posts</title>
+  </head>
+  <body>
+    <h1>Food Posts</h1>
+    {% if food_posts %}
+      <ul>
+        {% for post in food_posts %}
+          <li>
+            <h2>{{ post.to_dict().food }}</h2>
+            <!-- <p>Date: {{ post.to_dict().date }}</p> -->
+            <p>Location: {{ post.to_dict().location }}</p>
+            {% if not post.to_dict().claimed %}
+              <form action="{{ url_for('claim_food', post_id=post.id) }}" method="post">
+                <!-- <label for="ngo_name">NGO Name:</label>
+                <input type="text" id="ngo_name" name="ngo_name" placeholder="Enter NGO name" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Enter email" required> -->
+
+                <button type="submit">Claim Food</button>
+              </form>
+            {% else %}
+              <p>Claimed by: {{ post.to_dict().claimed_by }} ({{ post.to_dict().claimed_email }})</p>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No food posts found.</p>
+    {% endif %}
+  </body>
+</html>
