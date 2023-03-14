@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for,session
+from flask import Flask, render_template, request, redirect, url_for,session, flash
 import firebase_admin
 from firebase_admin import credentials, firestore, auth
 import geopy.distance
@@ -118,9 +118,46 @@ def post_food():
         # store the food post in the Firebase Firestore database
         food_posts.add(food_post)
         
-        return 'Food posted successfully!'
+        flash('Food posted successfully!')
+        return render_template('post_food.html',email = email)
+        
     else:
-        return render_template('post_food.html')
+        return render_template('post_food.html',email = email)
+
+@app.route('/allposts/<email>',  methods=['POST'])
+def allposts(email):
+    db = firestore.client()
+    food_posts = db.collection('food_posts').where('email', '==', email).get()
+    return render_template('post_food.html', food_posts=food_posts, email=email)
+
+
+
+
+
+# @app.route('/post_food', methods=['GET', 'POST'])
+# def post_food():
+#     email = session['email']
+#     if request.method == 'POST':
+#         lat = float(request.form.get('lat'))
+#         lng = float(request.form.get('lng'))
+#         food_name = request.form.get('food_name')
+#         food_description = request.form.get('food_description')
+#         quantity = int(request.form['quantity'])
+#         food_post = {
+#             'food': food_name,
+#             'description': food_description,
+#             'quantity': quantity,
+#             'location': firestore.GeoPoint(lat, lng),
+#             'claimed_by': '',
+#             'email': email
+#         }
+#         food_posts.add(food_post)
+#         flash('Food posted successfully!', 'success')
+#         return redirect(url_for('post_food'))
+#     else:
+#         db = firestore.client()
+#         food_posts = db.collection('food_posts').get()
+#         return render_template('post_food.html', food_posts=food_posts, email=email)
 
 
 @app.route('/food_post')
