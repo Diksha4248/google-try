@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>All Posts</title>
+  </head>
+  <body>
+    <h1>All Posts</h1>
+    <ul>
+      {% for post in food_posts %}
+      <li>
+        <h2>{{ post.to_dict().food }}</h2>
+        <p>Description: {{ post.to_dict().description }}</p>
+        <p>Quantity: {{ post.to_dict().quantity }}</p>
+        <p>Location: {{ post.to_dict().location }}</p>
+        <p>Claimed by: {{ post.to_dict().claimed_by }}</p>
+        <p>Email: {{ post.to_dict().email }}</p>
+      </li>
+      {% endfor %}
+    </ul>
+    <a href="/">Home</a>
+  </body>
+</html>

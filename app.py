@@ -83,81 +83,35 @@ def login():
         
     return render_template('login.html')
 
-
 @app.route('/post_food', methods=['GET', 'POST'])
 def post_food():
-    # session_cookie = request.cookies.get('session')
-    # decoded_claims = firebase_auth.verify_session_cookie(session_cookie, check_revoked=True)
-    # uid = decoded_claims['uid']
-    # email = decoded_claims['email']
-    
     email = session['email']
+    food_posts = db.collection('food_posts')
+
     if request.method == 'POST':
-        # get the user's current location from the browser's geolocation API
         lat = float(request.form.get('lat'))
         lng = float(request.form.get('lng'))
-        
-        # get the other form data
         food_name = request.form.get('food_name')
         food_description = request.form.get('food_description')
         quantity = int(request.form['quantity'])
-        
-        # get the email of the logged-in user
-        # email = firebase_auth.current_user().email
-        
-        # create the food post dictionary
+
         food_post = {
             'food': food_name,
             'description': food_description,
             'quantity': quantity,
             'location': firestore.GeoPoint(lat, lng),
             'claimed_by': '',
-            'email': email
+            'email': email,
+            'claimed': False
         }
-        
-        # store the food post in the Firebase Firestore database
+
         food_posts.add(food_post)
-        
+
         flash('Food posted successfully!')
-        return render_template('post_food.html',email = email)
-        
-    else:
-        return render_template('post_food.html',email = email)
 
-@app.route('/allposts/<email>',  methods=['POST'])
-def allposts(email):
-    db = firestore.client()
-    food_posts = db.collection('food_posts').where('email', '==', email).get()
-    return render_template('post_food.html', food_posts=food_posts, email=email)
+    my_posts = food_posts.where('email', '==', email).get()
+    return render_template('post_food.html', email=email, my_posts=my_posts)
 
-
-
-
-
-# @app.route('/post_food', methods=['GET', 'POST'])
-# def post_food():
-#     email = session['email']
-#     if request.method == 'POST':
-#         lat = float(request.form.get('lat'))
-#         lng = float(request.form.get('lng'))
-#         food_name = request.form.get('food_name')
-#         food_description = request.form.get('food_description')
-#         quantity = int(request.form['quantity'])
-#         food_post = {
-#             'food': food_name,
-#             'description': food_description,
-#             'quantity': quantity,
-#             'location': firestore.GeoPoint(lat, lng),
-#             'claimed_by': '',
-#             'email': email
-#         }
-#         food_posts.add(food_post)
-#         flash('Food posted successfully!', 'success')
-#         return redirect(url_for('post_food'))
-#     else:
-#         db = firestore.client()
-#         food_posts = db.collection('food_posts').get()
-#         return render_template('post_food.html', food_posts=food_posts, email=email)
 
 
 @app.route('/food_post')
@@ -166,9 +120,21 @@ def food_post():
     db = firestore.client()
     food_posts = db.collection('food_posts').get()
 
-    # Render template with food posts
-    return render_template('food_post.html', food_posts=food_posts)
+    # Filter food posts claimed by the logged in NGO
+    claimed_posts = []
+    email = session['email']
+    for post in food_posts:
+        if post.to_dict()['claimed_email'] == email:
+            claimed_posts.append(post)
 
+    # Filter unclaimed food posts
+    unclaimed_posts = []
+    for post in food_posts:
+        if not post.to_dict()['claimed']:
+            unclaimed_posts.append(post)
+
+    # Render template with food posts
+    return render_template('food_post.html', unclaimed_posts=unclaimed_posts, claimed_posts=claimed_posts)
 
 @app.route('/claim_food/<post_id>', methods=['POST'])
 def claim_food(post_id):
@@ -176,28 +142,27 @@ def claim_food(post_id):
     db = firestore.client()
     post_ref = db.collection('food_posts').document(post_id)
     post = post_ref.get().to_dict()
-    print(post['email'])
-    ybhav = str(session['email'])
-    recieveq = [post['email']]
-    claim_user = session['username']
-    # food_posts = db.collection('food_posts').get()
+
     # Send email to food donor
     email_text = f"Hello,\n\nAn NGO has claimed your food post for {post['food']}. " \
-             f"Please contact them at {ybhav} to arrange for pickup/delivery.\n\n" \
-             f"Thank you for your generosity!\n\nFood Donation Platform"
-    print(email_text)
-    message = Message(subject="Your food post has been claimed!", sender='wetrio222@gmail.com', body=email_text, recipients=recieveq)
+                 f"Please contact them at {session['email']} to arrange for pickup/delivery.\n\n" \
+                 f"Thank you for your generosity!\n\nFood Donation Platform"
+    message = Message(subject="Your food post has been claimed!", sender='wetrio222@gmail.com', body=email_text, recipients=[post['email']])
     mail.send(message)
     
     # Update food post with NGO information
     post_ref.update({
         'claimed': True,
-        'claimed_by': claim_user,
+        'claimed_by': session['username'],
         'claimed_email': session['email']
     })
-
+    flash('Food claimed successfully!')
+    
     # Redirect to the food post page
-    return redirect(url_for('food_post'))
+    return redirect('/food_post')
+
+
+
 
 @app.route('/logout')
 def logout():

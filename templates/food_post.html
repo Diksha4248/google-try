@@ -6,51 +6,40 @@
   </head>
   <body>
     <h1>Food Posts</h1>
-    {% if food_posts %}
-    {% set unclaimed_posts_exist = false %}
-    <ul>
-      {% for post in food_posts %}
-        {% if not post.to_dict().claimed %}
-        {% set unclaimed_posts_exist = true %}
-        <li>
-          <h2>{{ post.to_dict().food }}</h2>
-          <!-- <p>Date: {{ post.to_dict().date }}</p> -->
-          <p>Location: {{ post.to_dict().location }}</p>
-          <form
-            action="{{ url_for('claim_food', post_id=post.id) }}"
-            method="post"
-          >
-          <button type="submit">Claim Food</button>
-          </form>
-        </li>
-        {% endif %}
-      {% else %}
-        {% if not unclaimed_posts_exist %}
-        <p>No unclaimed food posts found.</p>
-        {% endif %}
-      {% endfor %}
-    </ul>
-    
-    <h2>Claimed Posts</h2>
-    <ul>
-      {% for post in food_posts %}
-        {% if post.to_dict().claimed %}
-        <li>
-          <h2>{{ post.to_dict().food }}</h2>
-          <!-- <p>Date: {{ post.to_dict().date }}</p> -->
-          <p>Location: {{ post.to_dict().location }}</p>
-          <p>Claimed by: {{ post.to_dict().claimed_by }}</p>
-        </li>
-        {% endif %}
-      {% else %}
-        {% if unclaimed_posts_exist %}
-        <p>All food posts have been claimed.</p>
-        {% endif %}
-      {% endfor %}
-    </ul>
-    
-    {% else %}
-    <p>No food posts found.</p>
+    {% if unclaimed_posts %}
+      <h2>Unclaimed Posts</h2>
+      <ul>
+        {% for post in unclaimed_posts %}
+          <li>
+            <h2>{{ post.to_dict().food }}</h2>
+            <p>Location: {{ post.to_dict().location }}</p>
+            {% if post.to_dict().claimed %}
+              <p>Claimed by: {{ post.to_dict().claimed_by }}</p>
+            {% else %}
+              <form action="{{ url_for('claim_food', post_id=post.id) }}" method="post">
+                <button type="submit">Claim Food</button>
+              </form>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% if claimed_posts %}
+      <h2>Claimed Posts</h2>
+      <ul>
+        {% for post in claimed_posts %}
+          <li>
+            <h2>{{ post.to_dict().food }}</h2>
+            <p>Location: {{ post.to_dict().location }}</p>
+            <p>Claimed by: {{ post.to_dict().claimed_by }}</p>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% if not unclaimed_posts and not claimed_posts %}
+      <p>No food posts found.</p>
     {% endif %}
 
     <a href="/logout">Logout</a>

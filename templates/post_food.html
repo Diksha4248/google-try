@@ -25,31 +25,25 @@
         placeholder="Quantity"
         required
       /><br /><br />
-      <!-- <input type="text" name="pickup_address" placeholder="Pickup Address" required><br><br>
-        <input type="text" name="pickup_time" placeholder="Pickup Time" required><br><br> -->
       <input type="hidden" name="lat" id="lat" />
       <input type="hidden" name="lng" id="lng" />
       <input type="submit" value="Post" />
     </form>
-    <form
-            action="{{ url_for('allposts', email=email) }}"
-            method="post"
-          >
-    <h2>MY POSTS</h2>
-<ul>
-  {% for post in food_posts %}
-    <li>
-      <h2>{{ post.to_dict().food }}</h2>
-      <p>Description: {{ post.to_dict().description }}</p>
-      <p>Quantity: {{ post.to_dict().quantity }}</p>
-      <p>Location: {{ post.to_dict().location }}</p>
-      <p>Claimed by: {{ post.to_dict().claimed_by }}</p>
-    </li>
-  {% endfor %}
-</ul>
 
-
-    <a href="/logout">Logout</a>
+    {% if my_posts %}
+      <h2>My Posts</h2>
+      <ul>
+        {% for post in my_posts %}
+          <li>
+            <strong>{{ post.get('food') }}</strong>
+            <p>{{ post.get('description') }}</p>
+            <p>Quantity: {{ post.get('quantity') }}</p>
+            <p>Location: {{ post.to_dict().location }}</p>
+            <p>Claimed by: {{ post.to_dict().claimed_by }}</p>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
 
     <script>
       function getLocation() {
