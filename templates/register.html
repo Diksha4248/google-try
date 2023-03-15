@@ -2,11 +2,73 @@
 <html>
   <head>
     <title>Register</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 0;
+      }
+
+      h1 {
+        font-size: 48px;
+        text-align: center;
+        color: #333;
+        margin-top: 50px;
+      }
+
+      form {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      label {
+        font-size: 24px;
+        color: #333;
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="password"],
+      select {
+        width: 100%;
+        padding: 10px;
+        font-size: 20px;
+        color: #333;
+        border-radius: 5px;
+        border: none;
+        background-color: #f5f5f5;
+        margin-bottom: 20px;
+      }
+
+      input[type="submit"] {
+        display: block;
+        margin: 0 auto;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        color: #fff;
+        background-color: #333;
+        transition: all 0.3s ease;
+        font-size: 20px;
+        border: none;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #555;
+      }
+    </style>
   </head>
   <body>
     <h1>Register</h1>
     <form method="POST" action="{{ url_for('register') }}">
-      <label for="name">username:</label>
+      <label for="name">Username:</label>
       <input type="text" name="name" id="name" /><br /><br />
 
       <label for="email">Email:</label>
@@ -25,8 +87,8 @@
       <label for="user_type">I am a:</label>
       <select name="user_type" id="user_type">
         <option value="food_provider">Food Donor</option>
-        <option value="ngo">NGO</option></select
-      ><br /><br />
+        <option value="ngo">NGO</option>
+      </select><br /><br />
 
       <input type="submit" value="Register" />
     </form>

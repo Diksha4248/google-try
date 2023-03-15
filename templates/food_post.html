@@ -3,13 +3,82 @@
   <head>
     <meta charset="UTF-8" />
     <title>Food Posts</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f1f1f1;
+        color: #333;
+        margin: 0;
+        padding: 0;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        text-align: center;
+        margin-top: 1rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+        margin: 1rem 0 0.5rem 0;
+      }
+
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      li {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      button[type="submit"] {
+        background-color: #4CAF50;
+        border: none;
+        color: #fff;
+        padding: 0.5rem;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 1rem;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button[type="submit"]:hover {
+        background-color: #3e8e41;
+      }
+
+      a {
+        color: #0074D9;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      p {
+        margin: 0.5rem 0;
+      }
+
+      .empty {
+        text-align: center;
+      }
+    </style>
   </head>
   <body>
     <h1>Food Posts</h1>
     {% if unclaimed_posts %}
       <h2>Unclaimed Posts</h2>
       <ul>
-        {% for post in unclaimed_posts %}
+        <!-- {% for post in unclaimed_posts %}
           <li>
             <h2>{{ post.to_dict().food }}</h2>
             <p>Location: {{ post.to_dict().location }}</p>
@@ -21,25 +90,62 @@
               </form>
             {% endif %}
           </li>
-        {% endfor %}
+        {% endfor %} -->
+
+        {% for post in unclaimed_posts %}
+  <li>
+    <h2>{{ post.to_dict().food }}</h2>
+    {% set location = post.to_dict().location %}
+    {% set lat = location.latitude %}
+    {% set lng = location.longitude %}
+    {% set address = get_address(lat, lng) %}
+    {% if address %}
+      <p>Location: {{ address }}</p>
+    {% else %}
+      <p>Location: {{ location }}</p>
+    {% endif %}
+    {% if post.to_dict().claimed %}
+      <p>Claimed by: {{ post.to_dict().claimed_by }}</p>
+    {% else %}
+      <form action="{{ url_for('claim_food', post_id=post.id) }}" method="post">
+        <button type="submit">Claim Food</button>
+      </form>
+    {% endif %}
+  </li>
+{% endfor %}
       </ul>
     {% endif %}
 
     {% if claimed_posts %}
       <h2>Claimed Posts</h2>
       <ul>
-        {% for post in claimed_posts %}
+        <!-- {% for post in claimed_posts %}
           <li>
             <h2>{{ post.to_dict().food }}</h2>
             <p>Location: {{ post.to_dict().location }}</p>
             <p>Claimed by: {{ post.to_dict().claimed_by }}</p>
           </li>
-        {% endfor %}
+        {% endfor %} -->
+        {% for post in claimed_posts %}
+  <li>
+    <h2>{{ post.to_dict().food }}</h2>
+    {% set location = post.to_dict().location %}
+    {% set lat = location.latitude %}
+    {% set lng = location.longitude %}
+    {% set address = get_address(lat, lng) %}
+    {% if address %}
+      <p>Location: {{ address }}</p>
+    {% else %}
+      <p>Location: {{ location }}</p>
+    {% endif %}
+    <p>Claimed by: {{ post.to_dict().claimed_by }}</p>
+  </li>
+{% endfor %}
       </ul>
     {% endif %}
 
     {% if not unclaimed_posts and not claimed_posts %}
-      <p>No food posts found.</p>
+      <p class="empty">No food posts found.</p>
     {% endif %}
 
     <a href="/logout">Logout</a>

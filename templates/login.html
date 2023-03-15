@@ -2,21 +2,92 @@
 <html>
   <head>
     <title>Login</title>
+    <style>
+      body {
+        background-color: #f2f2f2;
+        font-family: Arial, sans-serif;
+      }
+
+      h1 {
+        color: #333333;
+        text-align: center;
+        margin-top: 50px;
+      }
+
+      form {
+        margin: 0 auto;
+        width: 50%;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+      }
+
+      label {
+        display: block;
+        margin-top: 20px;
+      }
+
+      input[type="email"],
+      input[type="password"],
+      input[type="text"],
+      select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        font-size: 16px;
+        font-family: Arial, sans-serif;
+      }
+
+      input[type="submit"] {
+        background-color: #008CBA;
+        color: #ffffff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        font-family: Arial, sans-serif;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #0072af;
+      }
+
+      a {
+        color: #008CBA;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      p {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 14px;
+      }
+    </style>
   </head>
   <body>
     <h1>Login</h1>
     <form method="POST" action="/login">
       <label for="email">Email:</label>
-      <input type="email" id="email" name="email" /><br />
+      <input type="email" id="email" name="email" />
       <label for="username">Username:</label>
-      <input type="text"  name="username" /><br />
+      <input type="text"  name="username" />
       <label for="password">Password:</label>
-      <input type="password" id="password" name="password" /><br />
+      <input type="password" id="password" name="password" />
       <label for="user_type">User Type:</label>
       <select id="user_type" name="user_type">
         <option value="food_provider">Food Provider</option>
         <option value="ngo">NGO</option>
-      </select><br />
+      </select>
       <input type="submit" value="Login" />
     </form>
     <p>Don't have an account? <a href="/register">Register here</a>.</p>

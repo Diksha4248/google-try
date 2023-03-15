@@ -6,6 +6,7 @@ from geopy.distance import distance
 from firebase_admin import auth as firebase_auth
 import secrets
 from flask_mail import Mail, Message
+import requests
 
 app = Flask(__name__)
 cred = credentials.Certificate("foodpro-e0c85-firebase-adminsdk-i61j7-68edee59ff.json")
@@ -26,6 +27,16 @@ app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 
 mail = Mail(app)
+def get_address(lat, lng):
+    api_key = '40a06180d30b4c219c3f0eddde964903'
+    url = f"https://api.opencagedata.com/geocode/v1/json?q={lat}+{lng}&key={api_key}"
+    response = requests.get(url)
+    if response.ok:
+        data = response.json()
+        if len(data['results']) > 0:
+            return data['results'][0]['formatted']
+    return None
+
 
 @app.route('/')
 def home():
@@ -101,6 +112,7 @@ def post_food():
             'quantity': quantity,
             'location': firestore.GeoPoint(lat, lng),
             'claimed_by': '',
+            'claimed_email': '',
             'email': email,
             'claimed': False
         }
@@ -110,7 +122,8 @@ def post_food():
         flash('Food posted successfully!')
 
     my_posts = food_posts.where('email', '==', email).get()
-    return render_template('post_food.html', email=email, my_posts=my_posts)
+    return render_template('post_food.html', email=email, my_posts=my_posts, get_address=get_address)
+
 
 
 
@@ -134,7 +147,7 @@ def food_post():
             unclaimed_posts.append(post)
 
     # Render template with food posts
-    return render_template('food_post.html', unclaimed_posts=unclaimed_posts, claimed_posts=claimed_posts)
+    return render_template('food_post.html', unclaimed_posts=unclaimed_posts, claimed_posts=claimed_posts,get_address=get_address)
 
 @app.route('/claim_food/<post_id>', methods=['POST'])
 def claim_food(post_id):
