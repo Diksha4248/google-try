@@ -2,9 +2,10 @@
 <html>
   <head>
     <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
       body {
-        background-color: #f2f2f2;
+        background-color: #fff5e1;
         font-family: Arial, sans-serif;
       }
 
@@ -16,7 +17,8 @@
 
       form {
         margin: 0 auto;
-        width: 50%;
+        width: 80%;
+        max-width: 500px;
         padding: 20px;
         background-color: #ffffff;
         border-radius: 5px;
@@ -44,7 +46,7 @@
       }
 
       input[type="submit"] {
-        background-color: #008CBA;
+        background-color: #00622e;   
         color: #ffffff;
         padding: 10px 20px;
         border: none;
@@ -55,7 +57,7 @@
       }
 
       input[type="submit"]:hover {
-        background-color: #0072af;
+        background-color: #008CBA;;
       }
 
       a {
@@ -71,6 +73,22 @@
         text-align: center;
         margin-top: 20px;
         font-size: 14px;
+      }
+
+      /* Media queries for smaller devices */
+      @media only screen and (max-width: 600px) {
+        form {
+          width: 90%;
+          margin-top: 20px;
+          margin-bottom: 20px;
+        }
+      }
+
+      /* Media queries for iPad */
+      @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+        form {
+          max-width: 600px;
+        }
       }
     </style>
   </head>
@@ -92,4 +110,4 @@
     </form>
     <p>Don't have an account? <a href="/register">Register here</a>.</p>
   </body>
-</html>
+</html>    

@@ -124,12 +124,142 @@
           left: -400%;
         }
       }
+
+
+      @media only screen and (max-width: 768px) {
+          /* styles for mobile */
+          h1 {
+          font-size: 36px;
+          margin-top: 30px;
+          }
+
+          p {
+          font-size: 16px;
+          padding: 10px;
+          }
+
+          a {
+          padding: 8px 16px;
+          }
+
+          /* modified slider styles */
+          #slider {
+          height: 300px;
+          margin-top: 30px;
+          margin-bottom: 30px;
+          }
+
+          #slider figure {
+          width: 300%;
+          animation: 20s slider-mobile infinite;
+          }
+
+          #slider figure img {
+          width: 33.33%;
+          }
+
+          @keyframes slider-mobile {
+          0% {
+          left: 0;
+          }
+          20% {
+          left: 0;
+          }
+          25% {
+          left: -100%;
+          }
+          45% {
+          left: -100%;
+          }
+          50% {
+          left: -200%;
+          }
+          70% {
+          left: -200%;
+          }
+          75% {
+          left: -300%;
+          }
+          95% {
+          left: -300%;
+          }
+          100% {
+          left: -400%;
+          }
+          }
+
+          }
+
+          @media only screen and (min-width: 769px) and (max-width: 1024px) {
+          /* styles for ipad */
+          h1 {
+          font-size: 42px;
+          margin-top: 40px;
+          }
+
+          p {
+          font-size: 18px;
+          padding: 15px;
+          }
+
+          a {
+          padding: 10px 20px;
+          }
+
+          /* modified slider styles */
+          #slider {
+          height: 350px;
+          margin-top: 40px;
+          margin-bottom: 40px;
+          }
+
+          #slider figure {
+          width: 400%;
+          animation: 20s slider-ipad infinite;
+          }
+
+          #slider figure img {
+          width: 25%;
+          }
+
+          @keyframes slider-ipad {
+          0% {
+          left: 0;
+          }
+          20% {
+          left: 0;
+          }
+          25% {
+          left: -100%;
+          }
+          45% {
+          left: -100%;
+          }
+          50% {
+          left: -200%;
+          }
+          70% {
+          left: -200%;
+          }
+          75% {
+          left: -300%;
+          }
+          95% {
+          left: -300%;
+          }
+          100% {
+          left: -300%;
+          }
+          }
+
+          }
     </style>
   </head>
   <body>
     <header>
       <nav>
         <ul>
+
           <li><a href="/about">About</a></li>
           <li><a href="/community">Community Page</a></li>
         </ul>
