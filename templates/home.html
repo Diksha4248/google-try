@@ -43,10 +43,15 @@
 
       /* added styles */
       header {
+
+
+        display: flex;
+
         background-color:#00622e;
         border-bottom: 1px solid #ccc;
         padding: 10px;
-        text-align: right;
+        justify-content: space-between;
+        align-items: center;
       }
 
       nav ul {
@@ -213,6 +218,30 @@
           margin-bottom: 40px;
           }
 
+      @media only screen and (max-width: 768px) {
+        /* styles for mobile */
+        h1 {
+          font-size: 36px;
+          margin-top: 30px;
+        }
+
+        p {
+          font-size: 16px;
+          padding: 10px;
+        }
+
+        a {
+          padding: 8px 16px;
+        }
+
+        /* modified slider styles */
+        #slider {
+          height: 300px;
+          margin-top: 30px;
+          margin-bottom: 30px;
+        }
+
+
           #slider figure {
           width: 400%;
           animation: 20s slider-ipad infinite;
@@ -257,6 +286,9 @@
   </head>
   <body>
     <header>
+      <div>
+        <h3>Foodpro</h3>
+      </div>
       <nav>
         <ul>
 
@@ -278,6 +310,7 @@
       <a href="/login">Login</a>
     </p>
 
+
     <div id="slider">
       <figure>
         <img src="../static/images/img3.jpg" alt="Slide 3">
@@ -291,6 +324,7 @@
     <footer style = "background-color: #00622e;">
       <p style = " color:#fff5e1;text-align: center;" >Contact us at <a href="mailto:wetrio222@gmail.com">wetrio222@gmail.com</a> for support.</p>
     </footer>    
+
 
   </body>
 </html>
