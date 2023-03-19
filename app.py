@@ -91,35 +91,6 @@ def login():
         
     return render_template('login.html')
 
-# @app.route('/community')
-# def community():
-#     # Initialize map
-#     map = folium.Map()
-
-#     # Retrieve all food posts from Firestore
-#     db = firestore.client()
-#     posts_ref = db.collection('food_posts')
-#     posts = posts_ref.get()
-
-#     # Calculate total meals served
-#     total_meals_served = 0
-#     for post in posts:
-#         total_meals_served += post.to_dict()['quantity']
-#     print(total_meals_served)
-#     # Display total meals served on page
-#     # total_meals_served_text = f"Total meals served: {total_meals_served}"
-
-#     # Add markers to map
-#     for post in posts:
-#         post_dict = post.to_dict()
-#         location = post_dict['location']
-#         lat, lon = location.latitude, location.longitude
-#         marker = folium.Marker([lat, lon])
-#         marker.add_to(map)
-
-    
-#     # Render page with map and total meals served
-    # return render_template('community.html', map=map._repr_html_(), total_meals_served=total_meals_served)
 
 
 @app.route('/community')

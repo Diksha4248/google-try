@@ -2,10 +2,14 @@
 <html>
   <head>
     <title>Post Food</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+      @import url("https://fonts.googleapis.com/css2?family=Prompt&display=swap");
       body {
         font-family: Arial, Helvetica, sans-serif;
         background-color: #f2f2f2;
+        margin: 0;
+        padding: 0;
       }
 
       h1 {
@@ -14,7 +18,7 @@
 
       form {
         margin: auto;
-        width: 50%;
+        width: 90%;
         padding: 20px;
         background-color: white;
         border: 1px solid #ccc;
@@ -35,7 +39,7 @@
       }
 
       input[type="submit"] {
-        background-color: #4caf50;
+        background-color: #00622e;
         color: white;
         padding: 12px 20px;
         border: none;
@@ -53,7 +57,7 @@
         padding: 0;
       }
 
-      li {
+      .list {
         background-color: white;
         padding: 20px;
         margin-bottom: 10px;
@@ -69,9 +73,98 @@
         margin-top: 0px;
         margin-bottom: 0px;
       }
+      header {
+        display: flex;
+        background-color: #00622e;
+        border-bottom: 1px solid #ccc;
+        padding: 10px;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      header h3 {
+        margin: 1px;
+        justify-content: center;
+      }
+
+      nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      nav li {
+        display: inline-block;
+        margin-right: 10px;
+      }
+
+      nav a {
+        color: black;
+        background-color: #fff5e1;
+        text-decoration: none;
+        padding: 10px;
+        border-radius: 10px;
+      }
+
+      nav a:hover {
+        background-color: #eee;
+        color: black;
+      }
+
+      /* Responsive styles for tablets and smaller screens */
+      @media only screen and (max-width: 768px) {
+        form {
+          width: 95%;
+        }
+      }
+
+      /* Responsive styles for mobile phones */
+      @media only screen and (max-width: 480px) {
+        form {
+          width: 100%;
+          padding: 10px;
+        }
+
+        input[type="submit"] {
+          font-size: 16px;
+          padding: 10px 15px;
+        }
+
+        li strong {
+          font-size: 18px;
+        }
+
+        li p {
+          font-size: 14px;
+        }
+      }
+
+      nav {
+          background-color: #00622e;
+      }
     </style>
   </head>
   <body>
+    <header>
+      <div>
+        <h3
+          style="
+            font-family: 'Prompt', sans-serif;
+            color: white;
+            font-size: 25px;
+            margin-left: 2rem;
+          "
+        >
+          Foodpro
+        </h3>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="/logout">Logout</a></li>
+        </ul>
+      </nav>
+    </header>
+
     <h1>Post Food</h1>
 
     <form method="POST" action="/post_food">
@@ -102,7 +195,7 @@
       <h2>My Posts</h2>
       <ul>
         {% for post in my_posts %}
-          <li>
+          <li class="list">
             <strong>{{ post.get('food') }}</strong>
             <p>{{ post.get('description') }}</p>
             <p>Quantity: {{ post.get('quantity') }}</p>
@@ -120,7 +213,26 @@
         {% endfor %}
       </ul>
     {% endif %}
-    <a href="/logout">Logout</a>
+    <!-- <a href="/logout">Logout</a> -->
+    <script>
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+          alert("Geolocation is not supported by this browser.");
+        }
+      }
+
+      function showPosition(position) {
+        document.getElementById("lat").value = position.coords.latitude;
+        document.getElementById("lng").value = position.coords.longitude;
+      }
+
+      getLocation();
+    </script>
+
+  </body>
+</html>
     <script>
       function getLocation() {
         if (navigator.geolocation) {

@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <title>Food Posts</title>
     <style>
+      @import url("https://fonts.googleapis.com/css2?family=Prompt&display=swap");
       body {
         font-family: Arial, sans-serif;
         background-color: #f1f1f1;
@@ -11,7 +12,6 @@
         margin: 0;
         padding: 0;
       }
-
       h1 {
         font-size: 2.5rem;
         text-align: center;
@@ -29,7 +29,7 @@
         padding: 0;
       }
 
-      li {
+      .list {
         background-color: #fff;
         border: 1px solid #ccc;
         border-radius: 5px;
@@ -38,7 +38,7 @@
       }
 
       button[type="submit"] {
-        background-color: #4CAF50;
+        background-color: #4caf50;
         border: none;
         color: #fff;
         padding: 0.5rem;
@@ -56,7 +56,7 @@
       }
 
       a {
-        color: #0074D9;
+        color: #0074d9;
         text-decoration: none;
       }
 
@@ -71,83 +71,126 @@
       .empty {
         text-align: center;
       }
+      header {
+        display: flex;
+        background-color: #00622e;
+        border-bottom: 1px solid #ccc;
+        padding: 10px;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      header h3 {
+        margin: 1px;
+        justify-content: center;
+      }
+
+      nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      nav li {
+        display: inline-block;
+        margin-right: 10px;
+      }
+
+      nav a {
+        color: black;
+        background-color: #fff5e1;
+        text-decoration: none;
+        padding: 10px;
+        border-radius: 10px;
+      }
+
+      nav a:hover {
+        background-color: #eee;
+        color: black;
+      }
     </style>
   </head>
   <body>
+    <header>
+      <div>
+        <h3
+          style="
+            font-family: 'Prompt', sans-serif;
+            color: white;
+            font-size: 25px;
+            margin-left: 2rem;
+          "
+        >
+          Foodpro
+        </h3>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="/logout">Logout</a></li>
+        </ul>
+      </nav>
+    </header>
     <h1>Food Posts</h1>
     {% if unclaimed_posts %}
-      <h2>Unclaimed Posts</h2>
-      <ul>
-        <!-- {% for post in unclaimed_posts %}
-          <li>
-            <h2>{{ post.to_dict().food }}</h2>
-            <p>Location: {{ post.to_dict().location }}</p>
-            {% if post.to_dict().claimed %}
-              <p>Claimed by: {{ post.to_dict().claimed_by }}</p>
-            {% else %}
-              <form action="{{ url_for('claim_food', post_id=post.id) }}" method="post">
-                <button type="submit">Claim Food</button>
-              </form>
-            {% endif %}
-          </li>
-        {% endfor %} -->
+    <h2>Unclaimed Posts</h2>
+    <ul>
+      {% for post in unclaimed_posts %}
+      <li class="list">
+        <h2>{{ post.to_dict().food }}</h2>
+        {% set location = post.to_dict().location %} {% set lat =
+        location.latitude %} {% set lng = location.longitude %} {% set address =
+        get_address(lat, lng) %} {% if address %}
+        <p>Description: {{ post.to_dict().description }}</p>
+        <p>Servings for : {{ post.to_dict().quantity }} people</p>
+        <p>Location: {{ address }}</p>
+        {% else %}
+        <p>Location: {{ location }}</p>
+        <p>Description: {{ post.to_dict().description }}</p>
+        {% endif %} {% if post.to_dict().claimed %}
 
-        {% for post in unclaimed_posts %}
-  <li>
-    <h2>{{ post.to_dict().food }}</h2>
-    {% set location = post.to_dict().location %}
-    {% set lat = location.latitude %}
-    {% set lng = location.longitude %}
-    {% set address = get_address(lat, lng) %}
-    {% if address %}
-      <p>Location: {{ address }}</p>
-    {% else %}
-      <p>Location: {{ location }}</p>
-    {% endif %}
-    {% if post.to_dict().claimed %}
-      <p>Claimed by: {{ post.to_dict().claimed_by }}</p>
-    {% else %}
-      <form action="{{ url_for('claim_food', post_id=post.id) }}" method="post">
-        <button type="submit">Claim Food</button>
-      </form>
-    {% endif %}
-  </li>
-{% endfor %}
-      </ul>
-    {% endif %}
+        <p>Claimed by: {{ post.to_dict().claimed_by }}</p>
 
-    {% if claimed_posts %}
-      <h2>Claimed Posts</h2>
-      <ul>
-        <!-- {% for post in claimed_posts %}
+        {% else %}
+        <form
+          action="{{ url_for('claim_food', post_id=post.id) }}"
+          method="post"
+        >
+          <button type="submit">Claim Food</button>
+        </form>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %} {% if claimed_posts %}
+    <h2>Claimed Posts</h2>
+    <ul>
+      <!-- {% for post in claimed_posts %}
           <li>
             <h2>{{ post.to_dict().food }}</h2>
             <p>Location: {{ post.to_dict().location }}</p>
             <p>Claimed by: {{ post.to_dict().claimed_by }}</p>
           </li>
         {% endfor %} -->
-        {% for post in claimed_posts %}
-  <li>
-    <h2>{{ post.to_dict().food }}</h2>
-    {% set location = post.to_dict().location %}
-    {% set lat = location.latitude %}
-    {% set lng = location.longitude %}
-    {% set address = get_address(lat, lng) %}
-    {% if address %}
-      <p>Location: {{ address }}</p>
-    {% else %}
-      <p>Location: {{ location }}</p>
+      {% for post in claimed_posts %}
+      <li class="list">
+        <h2>{{ post.to_dict().food }}</h2>
+        {% set location = post.to_dict().location %} {% set lat =
+        location.latitude %} {% set lng = location.longitude %} {% set address =
+        get_address(lat, lng) %} {% if address %}
+        <p>Description: {{ post.to_dict().description }}</p>
+        <p>Servings for : {{ post.to_dict().quantity }} people</p>
+        <p>Location: {{ address }}</p>
+        {% else %}
+        <p>Description: {{ post.to_dict().description }}</p>
+        <p>Servings for : {{ post.to_dict().quantity }} people</p>
+        <p>Location: {{ location }}</p>
+        {% endif %}
+        <p>Claimed by: {{ post.to_dict().claimed_by }}</p>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %} {% if not unclaimed_posts and not claimed_posts %}
+    <p class="empty">No food posts found.</p>
     {% endif %}
-    <p>Claimed by: {{ post.to_dict().claimed_by }}</p>
-  </li>
-{% endfor %}
-      </ul>
-    {% endif %}
-
-    {% if not unclaimed_posts and not claimed_posts %}
-      <p class="empty">No food posts found.</p>
-    {% endif %}
-
-    <a href="/logout">Logout</a>
   </body>
 </html>

@@ -4,10 +4,9 @@
     <title>About Us</title>
   </head>
   <body>
-    <h1>this is the about page</h1>
     </ul>
-
     <style>
+      @import url("https://fonts.googleapis.com/css2?family=Prompt&display=swap");
       body {
         font-family: Arial, sans-serif;
         background-color: #f5f5f5;
@@ -33,10 +32,17 @@
 
       /* added styles */
       header {
-        background-color: #fff;
+        display: flex;
+        background-color: #00622e;
         border-bottom: 1px solid #ccc;
         padding: 10px;
-        text-align: right;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      header h3 {
+        margin: 1px;
+        justify-content: center;
       }
 
       nav ul {
@@ -51,25 +57,37 @@
       }
 
       nav a {
-        color: white;
-        background-color: #333;
+        color: black;
+        background-color: #fff5e1;
         text-decoration: none;
-        padding: 5px;
+        padding: 10px;
+        border-radius: 10px;
       }
 
       nav a:hover {
         background-color: #eee;
         color: black;
       }
+
  
     </style>
   </head>
   <body>
     <header>
+      <h3
+          style="
+            font-family: 'Prompt', sans-serif;
+            color: white;
+            font-size: 25px;
+            margin-left: 2rem;
+          "
+        >
+          Foodpro
+        </h3>
       <nav>
         <ul>
           <li><a href="/">Home</a></li>
-          <li><a href="/community">Community Page</a></li>
+          <li><a href="/community">Community</a></li>
         </ul>
       </nav>
     </header>

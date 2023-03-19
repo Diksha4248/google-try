@@ -3,6 +3,7 @@
   <head>
     <title>Home</title>
     <style>
+      @import url("https://fonts.googleapis.com/css2?family=Prompt&display=swap");
       body {
         font-family: Arial, sans-serif;
         background-color: #fff5e1;
@@ -43,15 +44,17 @@
 
       /* added styles */
       header {
-
-
         display: flex;
-
-        background-color:#00622e;
+        background-color: #00622e;
         border-bottom: 1px solid #ccc;
         padding: 10px;
         justify-content: space-between;
         align-items: center;
+      }
+
+      header h3 {
+        margin: 1px;
+        justify-content: center;
       }
 
       nav ul {
@@ -130,94 +133,6 @@
         }
       }
 
-
-      @media only screen and (max-width: 768px) {
-          /* styles for mobile */
-          h1 {
-          font-size: 36px;
-          margin-top: 30px;
-          }
-
-          p {
-          font-size: 16px;
-          padding: 10px;
-          }
-
-          a {
-          padding: 8px 16px;
-          }
-
-          /* modified slider styles */
-          #slider {
-          height: 300px;
-          margin-top: 30px;
-          margin-bottom: 30px;
-          }
-
-          #slider figure {
-          width: 300%;
-          animation: 20s slider-mobile infinite;
-          }
-
-          #slider figure img {
-          width: 33.33%;
-          }
-
-          @keyframes slider-mobile {
-          0% {
-          left: 0;
-          }
-          20% {
-          left: 0;
-          }
-          25% {
-          left: -100%;
-          }
-          45% {
-          left: -100%;
-          }
-          50% {
-          left: -200%;
-          }
-          70% {
-          left: -200%;
-          }
-          75% {
-          left: -300%;
-          }
-          95% {
-          left: -300%;
-          }
-          100% {
-          left: -400%;
-          }
-          }
-
-          }
-
-          @media only screen and (min-width: 769px) and (max-width: 1024px) {
-          /* styles for ipad */
-          h1 {
-          font-size: 42px;
-          margin-top: 40px;
-          }
-
-          p {
-          font-size: 18px;
-          padding: 15px;
-          }
-
-          a {
-          padding: 10px 20px;
-          }
-
-          /* modified slider styles */
-          #slider {
-          height: 350px;
-          margin-top: 40px;
-          margin-bottom: 40px;
-          }
-
       @media only screen and (max-width: 768px) {
         /* styles for mobile */
         h1 {
@@ -241,59 +156,152 @@
           margin-bottom: 30px;
         }
 
+        #slider figure {
+          width: 300%;
+          animation: 20s slider-mobile infinite;
+        }
+
+        #slider figure img {
+          width: 33.33%;
+        }
+
+        @keyframes slider-mobile {
+          0% {
+            left: 0;
+          }
+          20% {
+            left: 0;
+          }
+          25% {
+            left: -100%;
+          }
+          45% {
+            left: -100%;
+          }
+          50% {
+            left: -200%;
+          }
+          70% {
+            left: -200%;
+          }
+          75% {
+            left: -300%;
+          }
+          95% {
+            left: -300%;
+          }
+          100% {
+            left: -400%;
+          }
+        }
+      }
+
+      @media only screen and (min-width: 769px) and (max-width: 1024px) {
+        /* styles for ipad */
+        h1 {
+          font-size: 42px;
+          margin-top: 40px;
+        }
+
+        p {
+          font-size: 18px;
+          padding: 15px;
+        }
+
+        a {
+          padding: 10px 20px;
+        }
+
+        /* modified slider styles */
+        #slider {
+          height: 350px;
+          margin-top: 40px;
+          margin-bottom: 40px;
+        }
+
+        @media only screen and (max-width: 768px) {
+          /* styles for mobile */
+          h1 {
+            font-size: 36px;
+            margin-top: 30px;
+          }
+
+          p {
+            font-size: 16px;
+            padding: 10px;
+          }
+
+          a {
+            padding: 8px 16px;
+          }
+
+          /* modified slider styles */
+          #slider {
+            height: 300px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+          }
 
           #slider figure {
-          width: 400%;
-          animation: 20s slider-ipad infinite;
+            width: 400%;
+            animation: 20s slider-ipad infinite;
           }
 
           #slider figure img {
-          width: 25%;
+            width: 25%;
           }
 
           @keyframes slider-ipad {
-          0% {
-          left: 0;
+            0% {
+              left: 0;
+            }
+            20% {
+              left: 0;
+            }
+            25% {
+              left: -100%;
+            }
+            45% {
+              left: -100%;
+            }
+            50% {
+              left: -200%;
+            }
+            70% {
+              left: -200%;
+            }
+            75% {
+              left: -300%;
+            }
+            95% {
+              left: -300%;
+            }
+            100% {
+              left: -300%;
+            }
           }
-          20% {
-          left: 0;
-          }
-          25% {
-          left: -100%;
-          }
-          45% {
-          left: -100%;
-          }
-          50% {
-          left: -200%;
-          }
-          70% {
-          left: -200%;
-          }
-          75% {
-          left: -300%;
-          }
-          95% {
-          left: -300%;
-          }
-          100% {
-          left: -300%;
-          }
-          }
-
-          }
+        }
+      }
     </style>
   </head>
   <body>
     <header>
       <div>
-        <h3>Foodpro</h3>
+        <h3
+          style="
+            font-family: 'Prompt', sans-serif;
+            color: white;
+            font-size: 25px;
+            margin-left: 2rem;
+          "
+        >
+          Foodpro
+        </h3>
       </div>
       <nav>
         <ul>
-
           <li><a href="/about">About</a></li>
-          <li><a href="/community">Community Page</a></li>
+          <li><a href="/community">Community</a></li>
         </ul>
       </nav>
     </header>
@@ -310,21 +318,22 @@
       <a href="/login">Login</a>
     </p>
 
-
     <div id="slider">
       <figure>
-        <img src="../static/images/img3.jpg" alt="Slide 3">
-        <img src="../static/images/nohunger.jpg" alt="Slide 1">
-        <img src="../static/images/img2.jpg" alt="Slide 2">
-        <img src="../static/images/img3.jpg" alt="Slide 3">
-        <img src="../static/images/nohunger.jpg" alt="Slide 1">   
+        <img src="../static/images/img3.jpg" alt="Slide 3" />
+        <img src="../static/images/nohunger.jpg" alt="Slide 1" />
+        <img src="../static/images/img2.jpg" alt="Slide 2" />
+        <img src="../static/images/img3.jpg" alt="Slide 3" />
+        <img src="../static/images/nohunger.jpg" alt="Slide 1" />
       </figure>
     </div>
 
-    <footer style = "background-color: #00622e;">
-      <p style = " color:#fff5e1;text-align: center;" >Contact us at <a href="mailto:wetrio222@gmail.com">wetrio222@gmail.com</a> for support.</p>
-    </footer>    
-
-
+    <footer style="background-color: #00622e">
+      <p style="color: #fff5e1; text-align: center">
+        Contact us at
+        <a href="mailto:wetrio222@gmail.com">wetrio222@gmail.com</a> for
+        support.
+      </p>
+    </footer>
   </body>
 </html>
