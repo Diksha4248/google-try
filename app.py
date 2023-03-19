@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for,session, flash
+from flask import Flask, render_template, request, redirect, url_for,session, flash, jsonify
 import firebase_admin
 from firebase_admin import credentials, firestore, auth
 from firebase_admin import auth as firebase_auth
@@ -6,8 +6,7 @@ import secrets
 from flask_mail import Mail, Message
 import requests
 import json
-import folium 
-from google.cloud import firestore as fr
+
 
 app = Flask(__name__)
 cred = credentials.Certificate("foodpro-e0c85-firebase-adminsdk-i61j7-68edee59ff.json")
@@ -137,34 +136,21 @@ def community():
         total_meals_served += post.to_dict()['quantity']
 
     # Add markers to map
-    features = []
+    markers = []
     for post in posts:
         post_dict = post.to_dict()
         location = post_dict['location']
         lat, lon = location.latitude, location.longitude
-        feature = {
-            "type": "Feature",
-            "geometry": {
-                "type": "Point",
-                "coordinates": [lon, lat]
-            },
-            "properties": {
-                "title": post_dict['food'],
-                "description": post_dict['description']
-            }
+        marker = {
+            'lat': lat,
+            'lon': lon,
+            'title': post_dict['food'],
+            'description': post_dict['description'],
         }
-        features.append(feature)
-
-    geojson_data = {
-        "type": "FeatureCollection",
-        "features": features
-    }
-
-    # Convert the GeoJSON data to a JavaScript variable
-    map_data = json.dumps(geojson_data)
+        markers.append(marker)
 
     # Render page with map and total meals served
-    return render_template('community.html', map_data=map_data, total_meals_served=total_meals_served)
+    return render_template('community.html', markers=markers, total_meals_served=total_meals_served)
 
 
 @app.route('/post_food', methods=['GET', 'POST'])

@@ -181,3 +181,305 @@ add a community page which will display the sum of all counts qunatities in food
   </body>
 </html>
 
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Home</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #fff5e1;
+        margin: 0;
+        padding: 0;
+      }
+
+      h1 {
+        font-size: 48px;
+        text-align: center;
+        color: #333;
+        margin-top: 50px;
+      }
+
+      p {
+        font-size: 20px;
+        line-height: 1.5;
+        color: #555;
+        padding: 20px;
+        margin: 0 auto;
+        max-width: 800px;
+      }
+
+      a {
+        display: inline-block;
+        margin: 0 10px;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        color: #fff5e1;
+        background-color: #00622e;
+        transition: all 0.3s ease;
+      }
+
+      a:hover {
+        background-color: #555;
+      }
+
+      /* added styles */
+      header {
+        background-color:#00622e;
+        border-bottom: 1px solid #ccc;
+        padding: 10px;
+        /* text-align: right; */
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      nav li {
+        display: inline-block;
+        margin-right: 10px;
+      }
+
+      nav a {
+        color: black;
+        background-color: #fff5e1;
+        text-decoration: none;
+        padding: 10px;
+        border-radius: 10px;
+      }
+
+      nav a:hover {
+        background-color: #eee;
+        color: black;
+      }
+
+      /* added slider styles */
+      #slider {
+        width: 100%;
+        height: 400px;
+        overflow: hidden;
+        margin-top: 50px;
+        margin-bottom: 50px;
+      }
+
+      #slider figure {
+        position: relative;
+        width: 500%;
+        margin: 0;
+        left: 0;
+        animation: 20s slider infinite;
+      }
+
+      #slider figure img {
+        width: 20%;
+        float: left;
+      }
+
+      @keyframes slider {
+        0% {
+          left: 0;
+        }
+        20% {
+          left: 0;
+        }
+        25% {
+          left: -100%;
+        }
+        45% {
+          left: -100%;
+        }
+        50% {
+          left: -200%;
+        }
+        70% {
+          left: -200%;
+        }
+        75% {
+          left: -300%;
+        }
+        95% {
+          left: -300%;
+        }
+        100% {
+          left: -400%;
+        }
+      }
+
+
+      @media only screen and (max-width: 768px) {
+          /* styles for mobile */
+          h1 {
+          font-size: 36px;
+          margin-top: 30px;
+          }
+
+          p {
+          font-size: 16px;
+          padding: 10px;
+          }
+
+          a {
+          padding: 8px 16px;
+          }
+
+          /* modified slider styles */
+          #slider {
+          height: 300px;
+          margin-top: 30px;
+          margin-bottom: 30px;
+          }
+
+          #slider figure {
+          width: 300%;
+          animation: 20s slider-mobile infinite;
+          }
+
+          #slider figure img {
+          width: 33.33%;
+          }
+
+          @keyframes slider-mobile {
+          0% {
+          left: 0;
+          }
+          20% {
+          left: 0;
+          }
+          25% {
+          left: -100%;
+          }
+          45% {
+          left: -100%;
+          }
+          50% {
+          left: -200%;
+          }
+          70% {
+          left: -200%;
+          }
+          75% {
+          left: -300%;
+          }
+          95% {
+          left: -300%;
+          }
+          100% {
+          left: -400%;
+          }
+          }
+
+          }
+
+          @media only screen and (min-width: 769px) and (max-width: 1024px) {
+          /* styles for ipad */
+          h1 {
+          font-size: 42px;
+          margin-top: 40px;
+          }
+
+          p {
+          font-size: 18px;
+          padding: 15px;
+          }
+
+          a {
+          padding: 10px 20px;
+          }
+
+          /* modified slider styles */
+          #slider {
+          height: 350px;
+          margin-top: 40px;
+          margin-bottom: 40px;
+          }
+
+          #slider figure {
+          width: 400%;
+          animation: 20s slider-ipad infinite;
+          }
+
+          #slider figure img {
+          width: 25%;
+          }
+
+          @keyframes slider-ipad {
+          0% {
+          left: 0;
+          }
+          20% {
+          left: 0;
+          }
+          25% {
+          left: -100%;
+          }
+          45% {
+          left: -100%;
+          }
+          50% {
+          left: -200%;
+          }
+          70% {
+          left: -200%;
+          }
+          75% {
+          left: -300%;
+          }
+          95% {
+          left: -300%;
+          }
+          100% {
+          left: -300%;
+          }
+          }
+
+          }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <h3>foodpro</h3>
+      </div>
+      <nav>
+        <ul>
+              <li><a href="/about">About</a></li>
+              <li><a href="/community" >Community Page</a></li>
+        </ul>
+      </nav>
+    </header>
+    <h1>Welcome to the Food Sharing App!</h1>
+    <p>
+      This app connects food providers with NGOs to help reduce food waste and
+      feed those in need. If you're a food provider, you can post excess food
+      that you have available. If you're an NGO, you can search for available
+      food and claim it for your organization.
+    </p>
+
+    <p>
+      <a href="/register">Register</a>
+      <a href="/login">Login</a>
+    </p>
+
+    <div id="slider">
+      <figure>
+        <img src="../static/images/img3.jpg" alt="Slide 3">
+        <img src="../static/images/nohunger.jpg" alt="Slide 1">
+        <img src="../static/images/img2.jpg" alt="Slide 2">
+        <img src="../static/images/img3.jpg" alt="Slide 3">
+        <img src="../static/images/nohunger.jpg" alt="Slide 1">   
+      </figure>
+    </div>
+
+    <footer style = "background-color: #00622e;">
+      <p style = " color:#fff5e1;text-align: center;" >Contact us at <a href="mailto:wetrio222@gmail.com">wetrio222@gmail.com</a> for support.</p>
+    </footer>    
+
+  </body>
+</html>

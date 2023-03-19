@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html>
   <head>
@@ -9,23 +7,14 @@
     <script src="https://openlayers.org/en/v6.6.1/build/ol.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-firestore.js"></script>
+  </head>
+  <body onload="initMap()">
+    <h1>Community Page</h1>
+    <div>
+      <p>Total Meals Served: <span id="total-meals">{{ total_meals_served }}</span></p>
+    </div>
+    <div id="map" style="height: 400px;"></div>
     <script>
-      // Your web app's Firebase configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyB3ICQefqBDGof9C7uet3X5GxhukZF9uPw",
-        authDomain: "foodpro-e0c85.firebaseapp.com",
-        projectId: "foodpro-e0c85",
-        storageBucket: "foodpro-e0c85.appspot.com",
-        messagingSenderId: "156873922944",
-        appId: "1:156873922944:web:afa5d579a98509ed768965",
-        measurementId: "G-90G3LQDCCB"
-      };
-
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-
-      // Get a reference to the Firestore database
-      const db = firebase.firestore();
 
       function initMap() {
         const map = new ol.Map({
@@ -36,52 +25,40 @@
             })
           ],
           view: new ol.View({
-            center: ol.proj.fromLonLat([-122.4194, 37.7749]),
-            zoom: 8
+            center: ol.proj.fromLonLat([78.9629, 20.5937]),
+            zoom: 5
           })
         });
-
-        // Retrieve all food posts from Firestore
-        db.collection("food_posts").get().then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            const data = doc.data();
-
-            // Create a new marker for each food post location
-            const marker = new ol.Feature({
-              geometry: new ol.geom.Point(ol.proj.fromLonLat([data.longitude, data.latitude]))
-            });
-
-            const markerLayer = new ol.layer.Vector({
-              source: new ol.source.Vector({
-                features: [marker]
-              })
-            });
-
-            map.addLayer(markerLayer);
+    
+        // Retrieve the marker data from the context variable
+        const markers = JSON.parse(`{{ markers | tojson }}`);
+    
+        // Add each marker as a feature to the map
+        markers.forEach(marker => {
+          const feature = new ol.Feature({
+            geometry: new ol.geom.Point(ol.proj.fromLonLat([marker.lon, marker.lat])),
+            title: marker.title,
+            description: marker.description,
           });
+          feature.setStyle(new ol.style.Style({
+            image: new ol.style.Icon({
+              src: 'https://openlayers.org/en/latest/examples/data/icon.png',
+              // scale: 2,
+              // src: 'https://cdn.mapmarker.io/api/v1/pin?size=50&background=%23f00&icon=fa-map-marker',
+              anchor: [0.5, 1],
+              scale: 2 // Set the scale to make the marker bigger
+            }),
+          }));
+          const source = new ol.source.Vector({
+            features: [feature],
+          });
+          const layer = new ol.layer.Vector({
+            source: source,
+          });
+          map.addLayer(layer);
         });
       }
     </script>
-  </head>
-  <body onload="initMap()">
-    <h1>Community Page</h1>
-    <div>
-      <p>Total Meals Served: <span id="total-meals">{{total_meals_served}}</span></p>
-    </div>
-    <div id="map" style="height: 400px;"></div>
-    <script>
-      // Retrieve all food posts from Firestore and calculate total meals served
-      db.collection("food_posts").get().then((querySnapshot) => {
-        let totalMeals = 0;
-
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          totalMeals += data.quantity;
-        });
-
-        // Update the total meals served count on the page
-        document.getElementById("total-meals").textContent = totalMeals;
-      });
-    </script>
+    
   </body>
 </html>
