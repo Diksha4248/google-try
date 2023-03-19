@@ -1,0 +1,87 @@
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Community Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://openlayers.org/en/v6.6.1/css/ol.css" type="text/css">
+    <script src="https://openlayers.org/en/v6.6.1/build/ol.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-firestore.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyB3ICQefqBDGof9C7uet3X5GxhukZF9uPw",
+        authDomain: "foodpro-e0c85.firebaseapp.com",
+        projectId: "foodpro-e0c85",
+        storageBucket: "foodpro-e0c85.appspot.com",
+        messagingSenderId: "156873922944",
+        appId: "1:156873922944:web:afa5d579a98509ed768965",
+        measurementId: "G-90G3LQDCCB"
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+
+      // Get a reference to the Firestore database
+      const db = firebase.firestore();
+
+      function initMap() {
+        const map = new ol.Map({
+          target: 'map',
+          layers: [
+            new ol.layer.Tile({
+              source: new ol.source.OSM()
+            })
+          ],
+          view: new ol.View({
+            center: ol.proj.fromLonLat([-122.4194, 37.7749]),
+            zoom: 8
+          })
+        });
+
+        // Retrieve all food posts from Firestore
+        db.collection("food_posts").get().then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            const data = doc.data();
+
+            // Create a new marker for each food post location
+            const marker = new ol.Feature({
+              geometry: new ol.geom.Point(ol.proj.fromLonLat([data.longitude, data.latitude]))
+            });
+
+            const markerLayer = new ol.layer.Vector({
+              source: new ol.source.Vector({
+                features: [marker]
+              })
+            });
+
+            map.addLayer(markerLayer);
+          });
+        });
+      }
+    </script>
+  </head>
+  <body onload="initMap()">
+    <h1>Community Page</h1>
+    <div>
+      <p>Total Meals Served: <span id="total-meals">{{total_meals_served}}</span></p>
+    </div>
+    <div id="map" style="height: 400px;"></div>
+    <script>
+      // Retrieve all food posts from Firestore and calculate total meals served
+      db.collection("food_posts").get().then((querySnapshot) => {
+        let totalMeals = 0;
+
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          totalMeals += data.quantity;
+        });
+
+        // Update the total meals served count on the page
+        document.getElementById("total-meals").textContent = totalMeals;
+      });
+    </script>
+  </body>
+</html>

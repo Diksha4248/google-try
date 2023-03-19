@@ -25,48 +25,159 @@ To allow NGOs to filter posts by distance and quantity, you can use the GeoFires
 I hope that helps you get started with your project! Let me know if you have any questions or need further assistance.
 
 
+add a community page which will display the sum of all counts qunatities in food_posts db as totoal meals served and a map using some free api displaying marker at all the food_post locations stored in food_posts db add this things to the existing  code and regenrate it use some free map ap
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Community Page</title>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Community Page</h1>
+    <h2>Total Meals Served: <span id="total-meals"></span></h2>
+    <div id="map"></div>
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            // Your Firebase configuration
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        // Initialize Firestore database
+        const db = firebase.firestore();
+
+        // Get total meals served from food_posts collection
+        let totalMeals = 0;
+        db.collection("food_posts").get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                totalMeals += doc.data().count;
+            });
+            document.getElementById("total-meals").textContent = totalMeals;
+        }).catch((error) => {
+            console.error("Error getting documents: ", error);
+        });
+
+        // Create map with markers for each food post location
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 10,
+                center: { lat: 37.7749, lng: -122.4194 }, // Default center of San Francisco
+            });
+
+            db.collection("food_posts").get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    const foodPost = doc.data();
+                    const marker = new google.maps.Marker({
+                        position: { lat: foodPost.latitude, lng: foodPost.longitude },
+                        map: map,
+                        title: foodPost.title,
+                    });
+                });
+            }).catch((error) => {
+                console.error("Error getting documents: ", error);
+            });
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
+</body>
+</html>
 
 
 
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8" />
-    <title>Food Posts</title>
+    <title>Community Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://openlayers.org/en/v6.6.1/css/ol.css" type="text/css">
+    <script src="https://openlayers.org/en/v6.6.1/build/ol.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-firestore.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyB3ICQefqBDGof9C7uet3X5GxhukZF9uPw",
+        authDomain: "foodpro-e0c85.firebaseapp.com",
+        projectId: "foodpro-e0c85",
+        storageBucket: "foodpro-e0c85.appspot.com",
+        messagingSenderId: "156873922944",
+        appId: "1:156873922944:web:afa5d579a98509ed768965",
+        measurementId: "G-90G3LQDCCB"
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+
+      // Get a reference to the Firestore database
+      const db = firebase.firestore();
+
+      function initMap() {
+        const map = new ol.Map({
+          target: 'map',
+          layers: [
+            new ol.layer.Tile({
+              source: new ol.source.OSM()
+            })
+          ],
+          view: new ol.View({
+            center: ol.proj.fromLonLat([-122.4194, 37.7749]),
+            zoom: 8
+          })
+        });
+
+        // Retrieve all food posts from Firestore
+        db.collection("food_posts").get().then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            const data = doc.data();
+
+            // Create a new marker for each food post location
+            const marker = new ol.Feature({
+              geometry: new ol.geom.Point(ol.proj.fromLonLat([data.longitude, data.latitude]))
+            });
+
+            const markerLayer = new ol.layer.Vector({
+              source: new ol.source.Vector({
+                features: [marker]
+              })
+            });
+
+            map.addLayer(markerLayer);
+          });
+        });
+      }
+    </script>
   </head>
   <body>
-    <h1>Food Posts</h1>
-    {% if food_posts %}
-    <ul>
-      {% for post in food_posts %}
-      <li>
-        <h2>{{ post.to_dict().food }}</h2>
-        <!-- <p>Date: {{ post.to_dict().date }}</p> -->
-        <p>Location: {{ post.to_dict().location }}</p>
-        {% if not post.to_dict().claimed %}
-        <form
-          action="{{ url_for('claim_food', post_id=post.id) }}"
-          method="post"
-        >
-        <button type="submit">Claim Food</button>
-        </form>
-        {% else %}
-        <p>
-          Claimed by: {{ post.to_dict().claimed_by }} ({{
-          post.to_dict().claimed_email }})
-        </p>
-        {% endif %}
-      </li>
-      {% endfor %}
-    </ul>
-    {% else %}
-    <p>No food posts found.</p>
-    {% endif %}
+    <h1>Community Page</h1>
+    <div>
+      <p>Total Meals Served: <span id="total-meals">{{total_meals_served}}</span></p>
+    </div>
+    <div id="map" style="height: 400px;">{{ map }}</div>
+    <script>
+      // Retrieve all food posts from Firestore and calculate total meals served
+      db.collection("food_posts").get().then((querySnapshot) => {
+        let totalMeals = 0;
 
-    <a href="/logout">Logout</a>
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          totalMeals += data.quantity;
+        });
+
+        // Update the total meals served count on the page
+        document.getElementById("total-meals").textContent = totalMeals;
+      });
+    </script>
   </body>
 </html>
-
-
-distance filter
 

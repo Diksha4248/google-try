@@ -5,7 +5,7 @@
     <style>
       body {
         font-family: Arial, sans-serif;
-        background-color: #f5f5f5;
+        background-color: #fff5e1;
         margin: 0;
         padding: 0;
       }
@@ -32,8 +32,8 @@
         padding: 10px 20px;
         border-radius: 5px;
         text-decoration: none;
-        color: #fff;
-        background-color: #333;
+        color: #fff5e1;
+        background-color: #00622e;
         transition: all 0.3s ease;
       }
 
@@ -43,10 +43,12 @@
 
       /* added styles */
       header {
-        background-color: #fff;
+        display: flex;
+        background-color:#00622e;
         border-bottom: 1px solid #ccc;
         padding: 10px;
-        text-align: right;
+        justify-content: space-between;
+        align-items: center;
       }
 
       nav ul {
@@ -61,10 +63,11 @@
       }
 
       nav a {
-        color: white;
-        background-color: #333;
+        color: black;
+        background-color: #fff5e1;
         text-decoration: none;
-        padding: 5px;
+        padding: 10px;
+        border-radius: 10px;
       }
 
       nav a:hover {
@@ -74,73 +77,126 @@
 
       /* added slider styles */
       #slider {
-        overflow: hidden;
         width: 100%;
+        height: 400px;
+        overflow: hidden;
+        margin-top: 50px;
+        margin-bottom: 50px;
       }
 
-      #slider img {
-        float: left;
+      #slider figure {
+        position: relative;
+        width: 500%;
+        margin: 0;
+        left: 0;
+        animation: 20s slider infinite;
+      }
+
+      #slider figure img {
         width: 20%;
-        height: auto;
+        float: left;
       }
 
-      #slider img:nth-child(1) {
-        animation: slide 20s infinite;
-      }
-
-      #slider img:nth-child(2) {
-        animation: slide 20s infinite 5s;
-      }
-
-      #slider img:nth-child(3) {
-        animation: slide 20s infinite 10s;
-      }
-
-      #slider img:nth-child(4) {
-        animation: slide 20s infinite 15s;
-      }
-
-      @keyframes slide {
+      @keyframes slider {
         0% {
-          transform: translateX(0);
+          left: 0;
         }
-
         20% {
-          transform: translateX(-100%);
+          left: 0;
         }
-
         25% {
-          transform: translateX(-100%);
+          left: -100%;
         }
-
         45% {
-          transform: translateX(-200%);
+          left: -100%;
         }
-
         50% {
-          transform: translateX(-200%);
+          left: -200%;
         }
-
         70% {
-          transform: translateX(-300%);
+          left: -200%;
         }
-
         75% {
-          transform: translateX(-300%);
+          left: -300%;
         }
-
         95% {
-          transform: translateX(-400%);
+          left: -300%;
         }
-
         100% {
-          transform: translateX(0%);
+          left: -400%;
         }
       }
+
+      @media only screen and (max-width: 768px) {
+        /* styles for mobile */
+        h1 {
+          font-size: 36px;
+          margin-top: 30px;
+        }
+
+        p {
+          font-size: 16px;
+          padding: 10px;
+        }
+
+        a {
+          padding: 8px 16px;
+        }
+
+        /* modified slider styles */
+        #slider {
+          height: 300px;
+          margin-top: 30px;
+          margin-bottom: 30px;
+        }
+
+          #slider figure {
+          width: 400%;
+          animation: 20s slider-ipad infinite;
+          }
+
+          #slider figure img {
+          width: 25%;
+          }
+
+          @keyframes slider-ipad {
+          0% {
+          left: 0;
+          }
+          20% {
+          left: 0;
+          }
+          25% {
+          left: -100%;
+          }
+          45% {
+          left: -100%;
+          }
+          50% {
+          left: -200%;
+          }
+          70% {
+          left: -200%;
+          }
+          75% {
+          left: -300%;
+          }
+          95% {
+          left: -300%;
+          }
+          100% {
+          left: -300%;
+          }
+          }
+
+          }
     </style>
   </head>
   <body>
     <header>
+      <div>
+        <h3>Foodpro</h3>
+      </div>
       <nav>
         <ul>
           <li><a href="/about">About</a></li>
@@ -159,26 +215,5 @@
       <a href="/register">Register</a>
       <a href="/login">Login</a>
     </p>
-    <div id="slider">
-      <img src="../static/images/image1.jpg" alt="Image 1">
-      <img src="../static/images/image2.jpg" alt="Image 2">
-      <img src="../static/images/image3.jpg" alt="Image 3">
-    </div>
-    <script>
-      var slideIndex = 0;
-      showSlides();
-  
-      function showSlides() {
-        var i;
-        var slides = document.getElementById("slider").getElementsByTagName("img");
-        for (i = 0; i < slides.length; i++) {
-          slides[i].style.display = "none";
-        }
-        slideIndex++;
-        if (slideIndex > slides.length) { slideIndex = 1 }
-        slides[slideIndex - 1].style.display = "block";
-        setTimeout(showSlides, 3000); // Change image every 3 seconds
-      }
-    </script>
   </body>
-  </html>
+</html>

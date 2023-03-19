@@ -1,12 +1,13 @@
 from flask import Flask, render_template, request, redirect, url_for,session, flash
 import firebase_admin
 from firebase_admin import credentials, firestore, auth
-import geopy.distance
-from geopy.distance import distance
 from firebase_admin import auth as firebase_auth
 import secrets
 from flask_mail import Mail, Message
 import requests
+import json
+import folium 
+from google.cloud import firestore as fr
 
 app = Flask(__name__)
 cred = credentials.Certificate("foodpro-e0c85-firebase-adminsdk-i61j7-68edee59ff.json")
@@ -36,7 +37,6 @@ def get_address(lat, lng):
         if len(data['results']) > 0:
             return data['results'][0]['formatted']
     return None
-
 
 @app.route('/')
 def home():
@@ -68,7 +68,6 @@ def register():
     return render_template('register.html')
 
 
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -93,6 +92,80 @@ def login():
             return 'Invalid login credentials: ' + str(e)
         
     return render_template('login.html')
+
+# @app.route('/community')
+# def community():
+#     # Initialize map
+#     map = folium.Map()
+
+#     # Retrieve all food posts from Firestore
+#     db = firestore.client()
+#     posts_ref = db.collection('food_posts')
+#     posts = posts_ref.get()
+
+#     # Calculate total meals served
+#     total_meals_served = 0
+#     for post in posts:
+#         total_meals_served += post.to_dict()['quantity']
+#     print(total_meals_served)
+#     # Display total meals served on page
+#     # total_meals_served_text = f"Total meals served: {total_meals_served}"
+
+#     # Add markers to map
+#     for post in posts:
+#         post_dict = post.to_dict()
+#         location = post_dict['location']
+#         lat, lon = location.latitude, location.longitude
+#         marker = folium.Marker([lat, lon])
+#         marker.add_to(map)
+
+    
+#     # Render page with map and total meals served
+    # return render_template('community.html', map=map._repr_html_(), total_meals_served=total_meals_served)
+
+
+@app.route('/community')
+def community():
+    # Retrieve all food posts from Firestore
+    db = firestore.client()
+    posts_ref = db.collection('food_posts')
+    posts = posts_ref.get()
+
+    # Calculate total meals served
+    total_meals_served = 0
+    for post in posts:
+        total_meals_served += post.to_dict()['quantity']
+
+    # Add markers to map
+    features = []
+    for post in posts:
+        post_dict = post.to_dict()
+        location = post_dict['location']
+        lat, lon = location.latitude, location.longitude
+        feature = {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [lon, lat]
+            },
+            "properties": {
+                "title": post_dict['food'],
+                "description": post_dict['description']
+            }
+        }
+        features.append(feature)
+
+    geojson_data = {
+        "type": "FeatureCollection",
+        "features": features
+    }
+
+    # Convert the GeoJSON data to a JavaScript variable
+    map_data = json.dumps(geojson_data)
+
+    # Render page with map and total meals served
+    return render_template('community.html', map_data=map_data, total_meals_served=total_meals_served)
+
 
 @app.route('/post_food', methods=['GET', 'POST'])
 def post_food():
