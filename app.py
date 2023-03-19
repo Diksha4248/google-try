@@ -5,7 +5,6 @@ from firebase_admin import auth as firebase_auth
 import secrets
 from flask_mail import Mail, Message
 import requests
-import json
 
 
 app = Flask(__name__)
