@@ -209,6 +209,7 @@ def claim_food(post_id):
 @app.route('/logout')
 def logout():
     session.pop('email', None)
+    session.pop('username', None)
     return render_template('home.html')
 
 @app.route ('/about')
