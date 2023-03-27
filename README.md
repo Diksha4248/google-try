@@ -30,5 +30,5 @@ https://user-images.githubusercontent.com/88928334/228029230-2d5bee58-f761-4a29-
 ## Challenges we ran into
 It was a challenging task to display user's location on the community page 
 
-## What's next for **Melodify**
+## What's next for **Foodpro**
 The next step is to further improve the model's functionalities and enhance the UI/UX of the web app.
